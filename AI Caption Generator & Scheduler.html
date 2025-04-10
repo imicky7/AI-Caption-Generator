@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<!-- saved from url=(0098)https://page.genspark.site/page/toolu_01R7e1rwQNJimBLDaLhSvMZt/ai_caption_generator_scheduler.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Caption Generator &amp; Scheduler</title>
+    <link href="./AI Caption Generator &amp; Scheduler_files/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./AI Caption Generator &amp; Scheduler_files/all.min.css">
+    <style>
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #1a202c;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.5s;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .active-tab {
+            display: block;
+        }
+        
+        .calendar-day {
+            min-height: 100px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .calendar-event {
+            margin: 2px;
+            padding: 4px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .template-card {
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .template-card:hover {
+            transform: scale(1.02);
+        }
+        
+        .dropzone {
+            border: 2px dashed #cbd5e0;
+            border-radius: 5px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .dropzone:hover {
+            background-color: #f7fafc;
+        }
+        
+        .platform-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #48bb78;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                padding-top: 15px;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .calendar-day {
+                min-height: 60px;
+            }
+            
+            .menu-toggle {
+                display: block !important;
+            }
+        }
+        
+        .menu-toggle {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+            display: none;
+        }
+        
+        /* Styles for tone selector */
+        .tone-selector input[type="radio"] {
+            display: none;
+        }
+        
+        .tone-selector label {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border: 1px solid #cbd5e0;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        
+        .tone-selector input[type="radio"]:checked + label {
+            background-color: #4299e1;
+            color: white;
+            border-color: #4299e1;
+        }
+    </style>
+<style type="text/css" id="mytempCss">._8mqQwQ { display: none; } ._1TWLMK.icF5zO { opacity: 0.01; }</style></head>
+<body class="bg-gray-100" data-new-gr-c-s-check-loaded="14.1229.0" data-gr-ext-installed="">
+    <!-- Toast Notification -->
+    <div id="toast" class="toast shadow-lg">
+        <span id="toast-message">Operation successful!</span>
+    </div>
+
+    <!-- Menu Toggle Button (Mobile) -->
+    <button class="menu-toggle bg-blue-600 text-white p-2 rounded-md" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar shadow-xl" id="sidebar">
+        <div class="px-6 py-4">
+            <h1 class="text-white text-xl font-bold mb-6">AI Caption Generator</h1>
+            <div class="border-b border-gray-700 mb-4"></div>
+            <ul class="space-y-2">
+                <li>
+                    <a href="https://page.genspark.site/page/toolu_01R7e1rwQNJimBLDaLhSvMZt/ai_caption_generator_scheduler.html#" class="text-gray-300 hover:text-white flex items-center py-2 px-4 rounded hover:bg-gray-700 nav-link active" data-target="generator">
+                        <i class="fas fa-magic mr-3"></i> Generate Captions
+                    </a>
+                </li>
+                <li>
+                    <a href="https://page.genspark.site/page/toolu_01R7e1rwQNJimBLDaLhSvMZt/ai_caption_generator_scheduler.html#" class="text-gray-300 hover:text-white flex items-center py-2 px-4 rounded hover:bg-gray-700 nav-link" data-target="scheduler">
+                        <i class="fas fa-calendar-alt mr-3"></i> Schedule Posts
+                    </a>
+                </li>
+                <li>
+                    <a href="https://page.genspark.site/page/toolu_01R7e1rwQNJimBLDaLhSvMZt/ai_caption_generator_scheduler.html#" class="text-gray-300 hover:text-white flex items-center py-2 px-4 rounded hover:bg-gray-700 nav-link" data-target="templates">
+                        <i class="fas fa-bookmark mr-3"></i> Saved Templates
+                    </a>
+                </li>
+                <li>
+                    <a href="https://page.genspark.site/page/toolu_01R7e1rwQNJimBLDaLhSvMZt/ai_caption_generator_scheduler.html#" class="text-gray-300 hover:text-white flex items-center py-2 px-4 rounded hover:bg-gray-700 nav-link" data-target="calendar">
+                        <i class="fas fa-calendar mr-3"></i> Calendar View
+                    </a>
+                </li>
+                <li>
+                    <a href="https://page.genspark.site/page/toolu_01R7e1rwQNJimBLDaLhSvMZt/ai_caption_generator_scheduler.html#" class="text-gray-300 hover:text-white flex items-center py-2 px-4 rounded hover:bg-gray-700 nav-link" data-target="settings">
+                        <i class="fas fa-cog mr-3"></i> Settings
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-4">
+            <div class="flex items-center text-sm text-gray-400">
+                <img src="./AI Caption Generator &amp; Scheduler_files/1f916.png" class="w-6 h-6 mr-2">
+                <span>AI Assistant Active</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content" id="main-content">
+        <!-- Generate Captions Tab -->
+        <div id="generator" class="tab-content active-tab">
+            <h2 class="text-2xl font-bold mb-6">Generate Creative Captions</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Caption Generator Form -->
+                <div class="col-span-2">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Caption Generator</h3>
+                        
+                        <!-- Image Upload Section -->
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Upload Image (Optional)</label>
+                            <div class="dropzone" id="image-dropzone" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)" onclick="document.getElementById(&#39;image-upload&#39;).click()">
+                                <input type="file" id="image-upload" class="hidden" accept="image/*" onchange="handleImageUpload(this.files)">
+                                <div id="upload-placeholder">
+                                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                                    <p class="text-gray-500">Drag &amp; drop an image here or click to browse</p>
+                                </div>
+                                <div id="image-preview" class="hidden">
+                                    <img id="preview-img" class="max-h-40 mx-auto">
+                                    <button class="mt-2 text-red-500" onclick="removeImage(event)">Remove Image</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Topic Input -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="topic">
+                                Topic or Keywords
+                            </label>
+                            <input type="text" id="topic" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="e.g., coffee shop, sunrise, new product launch">
+                        </div>
+                        
+                        <!-- Content Description -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
+                                Content Description
+                            </label>
+                            <textarea id="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" rows="3" placeholder="Describe what your post is about..."></textarea>
+                        </div>
+                        
+                        <!-- Tone Selection -->
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">
+                                Tone
+                            </label>
+                            <div class="tone-selector">
+                                <input type="radio" name="tone" id="professional" value="professional" checked="">
+                                <label for="professional" class="text-sm">Professional</label>
+                                
+                                <input type="radio" name="tone" id="casual" value="casual">
+                                <label for="casual" class="text-sm">Casual</label>
+                                
+                                <input type="radio" name="tone" id="funny" value="funny">
+                                <label for="funny" class="text-sm">Funny</label>
+                                
+                                <input type="radio" name="tone" id="inspirational" value="inspirational">
+                                <label for="inspirational" class="text-sm">Inspirational</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Platform Selection -->
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">
+                                Platform
+                            </label>
+                            <div class="flex flex-wrap">
+                                <label class="inline-flex items-center mr-4 mb-2">
+                                    <input type="checkbox" class="form-checkbox text-blue-500" name="platforms" value="instagram" checked="">
+                                    <span class="ml-2"><i class="fab fa-instagram platform-icon text-pink-500"></i>Instagram</span>
+                                </label>
+                                <label class="inline-flex items-center mr-4 mb-2">
+                                    <input type="checkbox" class="form-checkbox text-blue-500" name="platforms" value="twitter">
+                                    <span class="ml-2"><i class="fab fa-twitter platform-icon text-blue-400"></i>Twitter</span>
+                                </label>
+                                <label class="inline-flex items-center mr-4 mb-2">
+                                    <input type="checkbox" class="form-checkbox text-blue-500" name="platforms" value="facebook">
+                                    <span class="ml-2"><i class="fab fa-facebook platform-icon text-blue-600"></i>Facebook</span>
+                                </label>
+                                <label class="inline-flex items-center mb-2">
+                                    <input type="checkbox" class="form-checkbox text-blue-500" name="platforms" value="linkedin">
+                                    <span class="ml-2"><i class="fab fa-linkedin platform-icon text-blue-700"></i>LinkedIn</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Generate Button -->
+                        <div class="flex justify-between">
+                            <button id="generate-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="generateCaptions()">
+                                <i class="fas fa-magic mr-2"></i> Generate Captions
+                            </button>
+                            <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="clearForm()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Generated Results -->
+                <div class="col-span-1">
+                    <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                        <h3 class="text-lg font-semibold mb-4">Generated Captions</h3>
+                        <div id="caption-results" class="space-y-4">
+                            <p class="text-gray-500 text-center py-8">Your generated captions will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scheduler Tab -->
+        <div id="scheduler" class="tab-content">
+            <h2 class="text-2xl font-bold mb-6">Schedule Your Posts</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Scheduling Form -->
+                <div class="col-span-2">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Create Schedule</h3>
+                        
+                        <!-- Caption Selection -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="caption-select">
+                                Select Caption
+                            </label>
+                            <select id="caption-select" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <option value="">-- Select a caption --</option>
+                                <option value="caption1">☕ Starting the day with a perfect blend of motivation and coffee! #MondayMood</option>
+                                <option value="caption2">✨ New product alert! Check out our latest innovation that's changing the game.</option>
+                                <option value="caption3">🌅 Beautiful sunsets remind us that each day can end beautifully too. #NatureLovers</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Platform Selection -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">
+                                Platforms
+                            </label>
+                            <div class="flex flex-wrap">
+                                <label class="inline-flex items-center mr-4 mb-2">
+                                    <input type="checkbox" class="form-checkbox text-blue-500" name="schedule-platforms" value="instagram" checked="">
+                                    <span class="ml-2"><i class="fab fa-instagram platform-icon text-pink-500"></i>Instagram</span>
+                                </label>
+                                <label class="inline-flex items-center mr-4 mb-2">
+                                    <input type="checkbox" class="form-checkbox text-blue-500" name="schedule-platforms" value="twitter">
+                                    <span class="ml-2"><i class="fab fa-twitter platform-icon text-blue-400"></i>Twitter</span>
+                                </label>
+                                <label class="inline-flex items-center mr-4 mb-2">
+                                    <input type="checkbox" class="form-checkbox text-blue-500" name="schedule-platforms" value="facebook">
+                                    <span class="ml-2"><i class="fab fa-facebook platform-icon text-blue-600"></i>Facebook</span>
+                                </label>
+                                <label class="inline-flex items-center mb-2">
+                                    <input type="checkbox" class="form-checkbox text-blue-500" name="schedule-platforms" value="linkedin">
+                                    <span class="ml-2"><i class="fab fa-linkedin platform-icon text-blue-700"></i>LinkedIn</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Date & Time -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="schedule-date">
+                                    Date
+                                </label>
+                                <input type="date" id="schedule-date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="schedule-time">
+                                    Time
+                                </label>
+                                <input type="time" id="schedule-time" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            </div>
+                        </div>
+                        
+                        <!-- Reminder -->
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">
+                                Set Reminder
+                            </label>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="set-reminder" class="form-checkbox text-blue-500 mr-2">
+                                <select id="reminder-time" class="shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
+                                    <option value="15">15 minutes</option>
+                                    <option value="30">30 minutes</option>
+                                    <option value="60">1 hour</option>
+                                    <option value="120">2 hours</option>
+                                    <option value="1440">1 day</option>
+                                </select>
+                                <span>before posting</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Schedule Button -->
+                        <div class="flex justify-between">
+                            <button id="schedule-btn" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="schedulePost()">
+                                <i class="fas fa-clock mr-2"></i> Schedule Post
+                            </button>
+                            <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="clearScheduleForm()">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Upcoming Posts Preview -->
+                <div class="col-span-1">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-lg font-semibold mb-4">Upcoming Posts</h3>
+                        <div id="upcoming-posts" class="space-y-4">
+                            <div class="border rounded p-3 bg-blue-50">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex">
+                                        <i class="fab fa-instagram text-pink-500 mr-2"></i>
+                                        <span class="text-sm font-medium">Instagram</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">Today, 3:00 PM</span>
+                                </div>
+                                <p class="text-sm">☕ Starting the day with a perfect blend of motivation and coffee! #MondayMood</p>
+                                <div class="mt-2 flex justify-end">
+                                    <button class="text-xs text-blue-500 mr-2">Edit</button>
+                                    <button class="text-xs text-red-500">Cancel</button>
+                                </div>
+                            </div>
+                            
+                            <div class="border rounded p-3 bg-blue-50">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex">
+                                        <i class="fab fa-twitter text-blue-400 mr-2"></i>
+                                        <span class="text-sm font-medium">Twitter</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">Tomorrow, 9:00 AM</span>
+                                </div>
+                                <p class="text-sm">✨ New product alert! Check out our latest innovation that's changing the game.</p>
+                                <div class="mt-2 flex justify-end">
+                                    <button class="text-xs text-blue-500 mr-2">Edit</button>
+                                    <button class="text-xs text-red-500">Cancel</button>
+                                </div>
+                            </div>
+                            
+                            <div class="border rounded p-3 bg-blue-50">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex">
+                                        <i class="fab fa-facebook text-blue-600 mr-2"></i>
+                                        <i class="fab fa-instagram text-pink-500 mr-2"></i>
+                                        <span class="text-sm font-medium">Multiple</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">Aug 15, 6:30 PM</span>
+                                </div>
+                                <p class="text-sm">🌅 Beautiful sunsets remind us that each day can end beautifully too. #NatureLovers</p>
+                                <div class="mt-2 flex justify-end">
+                                    <button class="text-xs text-blue-500 mr-2">Edit</button>
+                                    <button class="text-xs text-red-500">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Templates Tab -->
+        <div id="templates" class="tab-content">
+            <h2 class="text-2xl font-bold mb-6">Saved Templates</h2>
+            
+            <div class="flex mb-6">
+                <input type="text" class="shadow appearance-none border rounded-l w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Search templates...">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r focus:outline-none focus:shadow-outline">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Template Cards -->
+                <div class="template-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold">Product Launch</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Professional</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">✨ Introducing [Product Name]: The [benefit] you've been waiting for! Now available at [link]. #NewProduct #Innovation</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <div class="flex space-x-1">
+                                <i class="fab fa-instagram text-pink-500"></i>
+                                <i class="fab fa-facebook text-blue-600"></i>
+                                <i class="fab fa-twitter text-blue-400"></i>
+                            </div>
+                            <span class="text-gray-500">Used 12 times</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 flex justify-end">
+                        <button class="text-blue-500 hover:text-blue-700 mr-3">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="template-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold">Motivational Monday</h3>
+                            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Inspirational</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Monday motivation: [inspirational quote]. What's driving you this week? Share in the comments! #MondayMotivation #Goals</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <div class="flex space-x-1">
+                                <i class="fab fa-instagram text-pink-500"></i>
+                                <i class="fab fa-linkedin text-blue-700"></i>
+                            </div>
+                            <span class="text-gray-500">Used 8 times</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 flex justify-end">
+                        <button class="text-blue-500 hover:text-blue-700 mr-3">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="template-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold">Behind the Scenes</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Casual</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">Peek behind the curtain! 👀 Here's what goes into making [product/service]. We're passionate about [value proposition]! #BehindTheScenes</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <div class="flex space-x-1">
+                                <i class="fab fa-instagram text-pink-500"></i>
+                                <i class="fab fa-facebook text-blue-600"></i>
+                            </div>
+                            <span class="text-gray-500">Used 5 times</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 flex justify-end">
+                        <button class="text-blue-500 hover:text-blue-700 mr-3">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="template-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold">Special Offer</h3>
+                            <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">Promotional</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">🔥 FLASH SALE ALERT! 🔥 Get [discount]% off on [product] for the next [time period]. Use code [CODE] at checkout! #Deal #LimitedTimeOffer</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <div class="flex space-x-1">
+                                <i class="fab fa-instagram text-pink-500"></i>
+                                <i class="fab fa-facebook text-blue-600"></i>
+                                <i class="fab fa-twitter text-blue-400"></i>
+                            </div>
+                            <span class="text-gray-500">Used 15 times</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 flex justify-end">
+                        <button class="text-blue-500 hover:text-blue-700 mr-3">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="template-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold">User Testimonial</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Professional</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">❝[Customer quote about your product]❞ - [Customer Name]. We're thrilled to hear about your experience with [Product/Service]! #CustomerLove #Testimonial</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <div class="flex space-x-1">
+                                <i class="fab fa-instagram text-pink-500"></i>
+                                <i class="fab fa-linkedin text-blue-700"></i>
+                            </div>
+                            <span class="text-gray-500">Used 7 times</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 flex justify-end">
+                        <button class="text-blue-500 hover:text-blue-700 mr-3">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="template-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold">Funny Friday</h3>
+                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Funny</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">When it's finally Friday and [humorous situation]... 🤣 Tag someone who can relate! #FridayFeeling #WeekendVibes</p>
+                        <div class="flex justify-between items-center text-sm">
+                            <div class="flex space-x-1">
+                                <i class="fab fa-instagram text-pink-500"></i>
+                                <i class="fab fa-facebook text-blue-600"></i>
+                            </div>
+                            <span class="text-gray-500">Used 10 times</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 flex justify-end">
+                        <button class="text-blue-500 hover:text-blue-700 mr-3">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-center">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    <i class="fas fa-plus mr-2"></i> Create New Template
+                </button>
+            </div>
+        </div>
+        
+        <!-- Calendar View Tab -->
+        <div id="calendar" class="tab-content">
+            <h2 class="text-2xl font-bold mb-6">Content Calendar</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h3 class="text-xl font-semibold">August 2023</h3>
+                    <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- Calendar Header -->
+                <div class="grid grid-cols-7 gap-2 mb-2">
+                    <div class="text-center font-semibold">Sun</div>
+                    <div class="text-center font-semibold">Mon</div>
+                    <div class="text-center font-semibold">Tue</div>
+                    <div class="text-center font-semibold">Wed</div>
+                    <div class="text-center font-semibold">Thu</div>
+                    <div class="text-center font-semibold">Fri</div>
+                    <div class="text-center font-semibold">Sat</div>
+                </div>
+                
+                <!-- Calendar Grid -->
+                <div class="grid grid-cols-7 gap-2">
+                    <div class="calendar-day p-2 bg-gray-100">
+                        <div class="text-right text-gray-500">30</div>
+                    </div>
+                    <div class="calendar-day p-2 bg-gray-100">
+                        <div class="text-right text-gray-500">31</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">1</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">2</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">3</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">4</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">5</div>
+                    </div>
+                    
+                    <div class="calendar-day p-2">
+                        <div class="text-right">6</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">7</div>
+                        <div class="calendar-event bg-pink-100 text-pink-800">
+                            <i class="fab fa-instagram mr-1"></i> 9:00 AM - Product Launch
+                        </div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">8</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">9</div>
+                        <div class="calendar-event bg-blue-100 text-blue-800">
+                            <i class="fab fa-facebook mr-1"></i> 2:30 PM - Special Offer
+                        </div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">10</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">11</div>
+                        <div class="calendar-event bg-blue-100 text-blue-800">
+                            <i class="fab fa-twitter mr-1"></i> 4:00 PM - Industry News
+                        </div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">12</div>
+                    </div>
+                    
+                    <div class="calendar-day p-2">
+                        <div class="text-right">13</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">14</div>
+                        <div class="calendar-event bg-purple-100 text-purple-800">
+                            <i class="fab fa-instagram mr-1"></i> 10:00 AM - User Story
+                        </div>
+                    </div>
+                    <div class="calendar-day p-2 bg-blue-50">
+                        <div class="text-right font-semibold">15</div>
+                        <div class="calendar-event bg-pink-100 text-pink-800">
+                            <i class="fab fa-instagram mr-1"></i> 6:30 PM - Sunset Photo
+                        </div>
+                        <div class="calendar-event bg-blue-100 text-blue-800">
+                            <i class="fab fa-facebook mr-1"></i> 6:30 PM - Sunset Photo
+                        </div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">16</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">17</div>
+                        <div class="calendar-event bg-blue-100 text-blue-800">
+                            <i class="fab fa-linkedin mr-1"></i> 1:00 PM - Industry Insight
+                        </div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">18</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">19</div>
+                    </div>
+                    
+                    <div class="calendar-day p-2">
+                        <div class="text-right">20</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">21</div>
+                        <div class="calendar-event bg-green-100 text-green-800">
+                            <i class="fab fa-instagram mr-1"></i> 11:30 AM - Behind the Scenes
+                        </div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">22</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">23</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">24</div>
+                        <div class="calendar-event bg-red-100 text-red-800">
+                            <i class="fab fa-twitter mr-1"></i> 5:45 PM - Weekend Tips
+                        </div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">25</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">26</div>
+                    </div>
+                    
+                    <div class="calendar-day p-2">
+                        <div class="text-right">27</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">28</div>
+                        <div class="calendar-event bg-yellow-100 text-yellow-800">
+                            <i class="fab fa-instagram mr-1"></i> 9:00 AM - Monday Motivation
+                        </div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">29</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">30</div>
+                    </div>
+                    <div class="calendar-day p-2">
+                        <div class="text-right">31</div>
+                    </div>
+                    <div class="calendar-day p-2 bg-gray-100">
+                        <div class="text-right text-gray-500">1</div>
+                    </div>
+                    <div class="calendar-day p-2 bg-gray-100">
+                        <div class="text-right text-gray-500">2</div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <h4 class="font-semibold mb-3">Legend</h4>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-pink-100 mr-2"></div>
+                            <span class="text-sm">Instagram</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-blue-100 mr-2"></div>
+                            <span class="text-sm">Facebook/Twitter/LinkedIn</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-purple-100 mr-2"></div>
+                            <span class="text-sm">User Stories</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-green-100 mr-2"></div>
+                            <span class="text-sm">Behind the Scenes</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-red-100 mr-2"></div>
+                            <span class="text-sm">Tips &amp; Tricks</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-yellow-100 mr-2"></div>
+                            <span class="text-sm">Motivational</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Tab -->
+        <div id="settings" class="tab-content">
+            <h2 class="text-2xl font-bold mb-6">Settings</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Account Settings -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold mb-4">Account Settings</h3>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                            Username
+                        </label>
+                        <input type="text" id="username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="socialmaster99">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                            Email
+                        </label>
+                        <input type="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="user@example.com">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                            Password
+                        </label>
+                        <input type="password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="********">
+                    </div>
+                    
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Save Changes
+                    </button>
+                </div>
+                
+                <!-- Notification Settings -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold mb-4">Notification Settings</h3>
+                    
+                    <div class="mb-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox text-blue-500 mr-2" checked="">
+                            <span class="text-gray-700">Email notifications for scheduled posts</span>
+                        </label>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox text-blue-500 mr-2" checked="">
+                            <span class="text-gray-700">Push notifications for reminders</span>
+                        </label>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox text-blue-500 mr-2">
+                            <span class="text-gray-700">Weekly summary reports</span>
+                        </label>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox text-blue-500 mr-2" checked="">
+                            <span class="text-gray-700">Performance analytics notifications</span>
+                        </label>
+                    </div>
+                    
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Save Preferences
+                    </button>
+                </div>
+                
+                <!-- Connected Accounts -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold mb-4">Connected Social Accounts</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fab fa-instagram text-pink-500 text-2xl mr-3"></i>
+                                <div>
+                                    <p class="font-medium">Instagram</p>
+                                    <p class="text-sm text-gray-500">@socialmaster</p>
+                                </div>
+                            </div>
+                            <button class="text-sm text-blue-500">Disconnect</button>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fab fa-facebook text-blue-600 text-2xl mr-3"></i>
+                                <div>
+                                    <p class="font-medium">Facebook</p>
+                                    <p class="text-sm text-gray-500">Social Master Page</p>
+                                </div>
+                            </div>
+                            <button class="text-sm text-blue-500">Disconnect</button>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fab fa-twitter text-blue-400 text-2xl mr-3"></i>
+                                <div>
+                                    <p class="font-medium">Twitter</p>
+                                    <p class="text-sm text-gray-500">@socialmaster</p>
+                                </div>
+                            </div>
+                            <button class="text-sm text-blue-500">Connect</button>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fab fa-linkedin text-blue-700 text-2xl mr-3"></i>
+                                <div>
+                                    <p class="font-medium">LinkedIn</p>
+                                    <p class="text-sm text-gray-500">Not connected</p>
+                                </div>
+                            </div>
+                            <button class="text-sm text-blue-500">Connect</button>
+                        </div>
+                    </div>
+                    
+                    <button class="mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <i class="fas fa-plus mr-2"></i> Add Another Account
+                    </button>
+                </div>
+                
+                <!-- AI Settings -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold mb-4">AI Caption Generation Settings</h3>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="max-length">
+                            Maximum Caption Length
+                        </label>
+                        <input type="range" id="max-length" class="w-full" min="50" max="500" value="280" oninput="document.getElementById(&#39;max-length-value&#39;).textContent = this.value">
+                        <p class="text-sm text-gray-500 mt-1">Current: <span id="max-length-value">280</span> characters</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="creativity">
+                            Creativity Level
+                        </label>
+                        <select id="creativity" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="low">Conservative</option>
+                            <option value="medium" selected="">Balanced</option>
+                            <option value="high">Highly Creative</option>
+                            <option value="extreme">Experimental</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            Default Hashtag Strategy
+                        </label>
+                        <div class="flex flex-wrap">
+                            <label class="inline-flex items-center mr-4 mb-2">
+                                <input type="radio" class="form-radio text-blue-500" name="hashtag-strategy" value="minimal" checked="">
+                                <span class="ml-2">Minimal (3-5)</span>
+                            </label>
+                            <label class="inline-flex items-center mr-4 mb-2">
+                                <input type="radio" class="form-radio text-blue-500" name="hashtag-strategy" value="moderate">
+                                <span class="ml-2">Moderate (5-10)</span>
+                            </label>
+                            <label class="inline-flex items-center mb-2">
+                                <input type="radio" class="form-radio text-blue-500" name="hashtag-strategy" value="maximum">
+                                <span class="ml-2">Maximum (10+)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox text-blue-500 mr-2" checked="">
+                            <span class="text-gray-700">Include emojis in generated captions</span>
+                        </label>
+                    </div>
+                    
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Save AI Preferences
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    navLinks.forEach(item => item.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Hide all tab contents
+                    document.querySelectorAll('.tab-content').forEach(tab => {
+                        tab.classList.remove('active-tab');
+                    });
+                    
+                    // Show target tab content
+                    const targetTab = this.getAttribute('data-target');
+                    document.getElementById(targetTab).classList.add('active-tab');
+                });
+            });
+        });
+        
+        // Mobile Menu Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            
+            if (sidebar.style.width === '250px' || sidebar.style.width === '') {
+                sidebar.style.width = '0';
+                mainContent.style.marginLeft = '0';
+            } else {
+                sidebar.style.width = '250px';
+                mainContent.style.marginLeft = '250px';
+            }
+        }
+        
+        // Image Upload Handling
+        function handleImageUpload(files) {
+            if (files.length > 0) {
+                const file = files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById('upload-placeholder').classList.add('hidden');
+                    document.getElementById('image-preview').classList.remove('hidden');
+                    document.getElementById('preview-img').src = e.target.result;
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function removeImage(e) {
+            e.stopPropagation();
+            document.getElementById('upload-placeholder').classList.remove('hidden');
+            document.getElementById('image-preview').classList.add('hidden');
+            document.getElementById('image-upload').value = '';
+        }
+        
+        function dragOverHandler(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('bg-gray-100');
+        }
+        
+        function dropHandler(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('bg-gray-100');
+            
+            if (e.dataTransfer.items) {
+                for (let i = 0; i < e.dataTransfer.items.length; i++) {
+                    if (e.dataTransfer.items[i].kind === 'file') {
+                        const file = e.dataTransfer.items[i].getAsFile();
+                        if (file.type.match('image.*')) {
+                            handleImageUpload([file]);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Caption Generation
+        function generateCaptions() {
+            const topic = document.getElementById('topic').value;
+            const description = document.getElementById('description').value;
+            const toneElement = document.querySelector('input[name="tone"]:checked');
+            const tone = toneElement ? toneElement.value : 'professional';
+            
+            // Check if we have required inputs
+            if (!topic && !description) {
+                showToast('Please enter a topic or description', 'error');
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('generate-btn').innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Generating...';
+            document.getElementById('generate-btn').disabled = true;
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                let captions = [];
+                
+                if (tone === 'professional') {
+                    captions = [
+                        "Introducing our latest innovation in " + topic + ". Designed with precision and care to elevate your experience. #Innovation #" + topic.replace(/\s+/g, ''),
+                        "Quality meets excellence with our approach to " + topic + ". Discover how we're setting new industry standards. #Professional #" + topic.replace(/\s+/g, '')
+                    ];
+                } else if (tone === 'casual') {
+                    captions = [
+                        "Just hanging out with " + topic + " today! Anyone else love this as much as we do? Drop a comment below! #Vibes #" + topic.replace(/\s+/g, ''),
+                        "That feeling when " + topic + " makes your day better! 😊 What's your favorite thing about it? #GoodTimes #" + topic.replace(/\s+/g, '')
+                    ];
+                } else if (tone === 'funny') {
+                    captions = [
+                        "When " + topic + " is life but also your biggest challenge! 🤣 Tag someone who relates! #LOL #" + topic.replace(/\s+/g, ''),
+                        "Plot twist: " + topic + " was the main character all along! 😂 Who else is guilty of this? #Funny #" + topic.replace(/\s+/g, '')
+                    ];
+                } else if (tone === 'inspirational') {
+                    captions = [
+                        "Every journey with " + topic + " begins with a single step. What's holding you back from taking yours today? #Inspiration #" + topic.replace(/\s+/g, ''),
+                        "The pursuit of excellence in " + topic + " is a path worth taking. Believe in your journey. ✨ #Motivation #" + topic.replace(/\s+/g, '')
+                    ];
+                }
+                
+                // Display the generated captions
+                const resultsContainer = document.getElementById('caption-results');
+                resultsContainer.innerHTML = '';
+                
+                captions.forEach((caption, index) => {
+                    const captionEl = document.createElement('div');
+                    captionEl.className = 'border rounded p-4 relative caption-item';
+                    captionEl.innerHTML = `
+                        <p class="mb-2">${caption}</p>
+                        <div class="flex justify-between mt-3">
+                            <div class="space-x-2">
+                                <button class="text-xs text-blue-500" onclick="copyToClipboard(${index})">
+                                    <i class="fas fa-copy mr-1"></i> Copy
+                                </button>
+                                <button class="text-xs text-green-500" onclick="scheduleCaption(${index})">
+                                    <i class="fas fa-calendar-plus mr-1"></i> Schedule
+                                </button>
+                            </div>
+                            <button class="text-xs text-gray-500" onclick="saveTemplate(${index})">
+                                <i class="fas fa-save mr-1"></i> Save
+                            </button>
+                        </div>
+                    `;
+                    resultsContainer.appendChild(captionEl);
+                });
+                
+                // Reset button state
+                document.getElementById('generate-btn').innerHTML = '<i class="fas fa-magic mr-2"></i> Generate Captions';
+                document.getElementById('generate-btn').disabled = false;
+                
+                showToast('Captions generated successfully!');
+                
+            }, 2000); // Simulate 2 second API call
+        }
+        
+        // Clear form
+        function clearForm() {
+            document.getElementById('topic').value = '';
+            document.getElementById('description').value = '';
+            document.querySelector('input[name="tone"][value="professional"]').checked = true;
+            document.querySelectorAll('input[name="platforms"]').forEach(el => {
+                el.checked = el.value === 'instagram';
+            });
+            removeImage({stopPropagation: () => {}});
+            document.getElementById('caption-results').innerHTML = '<p class="text-gray-500 text-center py-8">Your generated captions will appear here.</p>';
+        }
+        
+        // Schedule post
+        function schedulePost() {
+            const caption = document.getElementById('caption-select').value;
+            const date = document.getElementById('schedule-date').value;
+            const time = document.getElementById('schedule-time').value;
+            
+            if (!caption || !date || !time) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Simulate API call
+            setTimeout(() => {
+                showToast('Post scheduled successfully!');
+                
+                // Reset form after scheduling
+                document.getElementById('caption-select').value = '';
+                document.getElementById('schedule-date').value = '';
+                document.getElementById('schedule-time').value = '';
+                document.getElementById('set-reminder').checked = false;
+                
+                // Switch to calendar view
+                document.querySelector('.nav-link[data-target="calendar"]').click();
+            }, 1000);
+        }
+        
+        function clearScheduleForm() {
+            document.getElementById('caption-select').value = '';
+            document.getElementById('schedule-date').value = '';
+            document.getElementById('schedule-time').value = '';
+            document.getElementById('set-reminder').checked = false;
+            document.querySelectorAll('input[name="schedule-platforms"]').forEach(el => {
+                el.checked = el.value === 'instagram';
+            });
+        }
+        
+        // Utility functions
+        function copyToClipboard(index) {
+            const captions = document.querySelectorAll('.caption-item p');
+            const captionText = captions[index].textContent;
+            
+            navigator.clipboard.writeText(captionText).then(() => {
+                showToast('Caption copied to clipboard!');
+            });
+        }
+        
+        function scheduleCaption(index) {
+            const captions = document.querySelectorAll('.caption-item p');
+            const captionText = captions[index].textContent;
+            
+            // Navigate to scheduler tab
+            document.querySelector('.nav-link[data-target="scheduler"]').click();
+            
+            // Set the selected caption in the dropdown
+            const selectElement = document.getElementById('caption-select');
+            const option = document.createElement('option');
+            option.value = 'dynamic-caption-' + Date.now();
+            option.text = captionText;
+            option.selected = true;
+            selectElement.add(option);
+        }
+        
+        function saveTemplate(index) {
+            const captions = document.querySelectorAll('.caption-item p');
+            const captionText = captions[index].textContent;
+            
+            showToast('Template saved successfully!');
+        }
+        
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            
+            if (type === 'error') {
+                toast.style.backgroundColor = '#f56565';
+            } else {
+                toast.style.backgroundColor = '#48bb78';
+            }
+            
+            toast.style.display = 'block';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open"><style>
+      div.grammarly-desktop-integration {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+
+      div.grammarly-desktop-integration:before {
+        content: attr(data-content);
+      }
+    </style><div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>
